@@ -8,6 +8,7 @@ function auth(req, res, next) {
   try {
     const decoded = jwt.verify(token, config.get("JWT_SECRET"));
     req.user = decoded;
+    console.log(decoded)
     //! By storing the payload of the token in decoded, we gain access to it for middleware by setting it
     //! equal to a property on the request object that gets passed to the route handler
     return next();
