@@ -14,7 +14,29 @@ const userSchema = mongoose.Schema({
   },
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
   isAdmin: { type: Boolean, required: true },
-});
+  profilePicture:{
+    type:String,
+    default:"",
+  },
+  coverPicture:{
+    type:String,
+    default:"",
+  },
+  followers:{
+    type:Array,
+    default: []
+  },
+  following:{
+    type: Array,
+    default:[]
+  },
+  isAdmin:{
+    type: Boolean,
+    default: false,
+  },
+},
+{timestamps:true}
+);
 
 userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
