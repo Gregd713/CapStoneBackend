@@ -34,6 +34,30 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  desc:{
+    type: String,
+    max: 50,
+  },
+  city:{
+    type: String,
+    max:50
+  },
+  from:{
+    type: String,
+    max:50
+  },
+  branch:{
+    type: String,
+    max:50
+  },
+  rank:{
+    type: String,
+    max:50
+  },
+  lastDutyStation:{
+    type: String,
+    max:50
+  },
 },
 {timestamps:true}
 );
