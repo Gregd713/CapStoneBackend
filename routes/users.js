@@ -69,6 +69,7 @@ router.get('/current', [auth], async (req,res)=>{
   const user= await User.findById(req.user._id);
   return res.send(user);
 });
+
 //get a user
 router.get("/:id", async (req, res) => {
   try {
