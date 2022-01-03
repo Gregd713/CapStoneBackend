@@ -176,4 +176,27 @@ router.delete("/:userId", [auth, admin], async (req, res) => {
   }
 });
 
+//*Replying to posts
+router.post("/:userId/posts/:postId/replies", [auth], async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    let thePost = user.posts.id(req.params.postId);
+
+    const reply = new Reply({
+          text: req.body.text,
+          likes: req.body.likes,
+          dislikes: req.body.dislikes
+      });
+
+      thePost.replies.push(reply);
+
+      await user.save();
+
+      return res.send(thePost.replies);
+  } catch (ex) {
+      return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
+
 module.exports = router;
