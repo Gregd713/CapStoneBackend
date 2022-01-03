@@ -2,6 +2,7 @@ const { User, validateLogin, validateUser } = require("../models/user");
 
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
+const fileUpload= require("../middleware/file-upload");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -9,7 +10,7 @@ const res = require("express/lib/response");
 const router = express.Router();
 
 //* POST register a new user
-router.post("/register", async (req, res) => {
+router.post("/register", fileUpload.single("image"), async (req, res) => {
   try {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -24,6 +25,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, salt),
       isAdmin: req.body.isAdmin,
+      image: req.file.path,
     });
 
     await user.save();
@@ -36,6 +38,7 @@ router.post("/register", async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        image: user.image,
       });
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
@@ -125,7 +128,7 @@ router.put("/:id/unfollow", async (req, res) => {
     }
   });
 //update user
-router.put("/:id",[auth], async (req, res) => {
+router.put("/:id",[auth], fileUpload.single("image"), async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
