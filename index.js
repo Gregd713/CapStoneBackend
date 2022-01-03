@@ -1,7 +1,8 @@
 const connectDb = require("./db/db");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
-const groupsRouter =require("./routes/groups")
+const groupsRouter =require("./routes/groups");
+const planRouter = require("./routes/plan")
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(`/api/users`, usersRouter);
 app.use(`/api/posts`, postsRouter);
 app.use(`/api/groups`,groupsRouter); 
+app.use(`/api/plan`,planRouter);
 
 app.use('/uploads/images',express.static(path.join('uploads','images')));
 app.use((error, req, res, next)=>{
