@@ -19,6 +19,9 @@ router.post("/register-group", async (req, res) => {
     group = new Group({
       name: req.body.name,
       password: await bcrypt.hash(req.body.password, salt),
+      desc: req.body.desc,
+      city:req.body.city,
+      state: req.body.state,
       isAdmin: req.body.isAdmin,
     });
 
@@ -31,6 +34,9 @@ router.post("/register-group", async (req, res) => {
         _id: group._id,
         name: group.name,
         email: group.email,
+        desc: group.desc,
+        city: group.city,
+        state:group.state,
         isAdmin: group.isAdmin,
       });
   } catch (ex) {

@@ -50,6 +50,9 @@ groupSchema.methods.generateAuthToken = function () {
     {
       _id: this._id,
       name: this.name,
+      desc: this.desc,
+      city: this.city,
+      state: this.state,
       isAdmin: this.isAdmin,
     },
     config.get("JWT_SECRET")
@@ -60,6 +63,9 @@ const validateGroup = (group) => {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     password: Joi.string().min(5).max(1024).required(),
+    desc:Joi.string().min(2).max(50).required(),
+    city:Joi.string().min(2).max(50).required(),
+    state:Joi.string().min(2).max(50).required(),
     isAdmin: Joi.bool().required(),
   });
   return schema.validate(group);
