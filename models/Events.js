@@ -3,7 +3,7 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const groupSchema = mongoose.Schema(
+const eventSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true, minLength: 5, maxLength: 255 },
     password: { type: String, required: true, minLength: 8, maxLength: 1024 },
@@ -13,31 +13,19 @@ const groupSchema = mongoose.Schema(
       default: "",
     },
     
-    coverPicture: {
+    time: {
       type: String,
       default: "",
     },
-    followers: {
-      type: Array,
-      default: [],
+    place: {
+        type: String,
+        default: "",
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    date: {
+        type: String,
+        default: "",
     },
     desc: {
-      type: String,
-      max: 50,
-    },
-    city: {
-      type: String,
-      max: 50,
-    },
-    state: {
-        type: String,
-        max: 50,
-      },
-    branch: {
       type: String,
       max: 50,
     },
@@ -45,7 +33,7 @@ const groupSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-groupSchema.methods.generateAuthToken = function () {
+eventSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -56,13 +44,13 @@ groupSchema.methods.generateAuthToken = function () {
   );
 };
 
-const validateGroup = (group) => {
+const validateEvent = (event) => {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     password: Joi.string().min(5).max(1024).required(),
     isAdmin: Joi.bool().required(),
   });
-  return schema.validate(group);
+  return schema.validate(event);
 };
 
 const validateLogin = (req) => {
@@ -73,8 +61,9 @@ const validateLogin = (req) => {
   return schema.validate(req);
 };
 
-const Group = mongoose.model("Group", groupSchema);
-module.exports.Group = Group;
-module.exports.groupSchema = groupSchema;
-module.exports.validateGroup = validateGroup;
+const Event = mongoose.model("Event", eventSchema);
+module.exports.Event = Event;
+module.exports.eventSchema = eventSchema;
+module.exports.validateEvent = validateEvent;
 module.exports.validateLogin = validateLogin;
+
