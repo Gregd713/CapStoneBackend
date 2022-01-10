@@ -1,11 +1,7 @@
 const { Event, validateLogin, validateEvent } = require("../models/events");
 
-const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
-
 const bcrypt = require("bcrypt");
 const express = require("express");
-const res = require("express/lib/response");
 const router = express.Router();
 
 //* POST register a new event
@@ -14,7 +10,7 @@ router.post("/register-event", async (req, res) => {
     const { error } = validateEvent(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let event = await event.findOne({ name: req.body.name });
+    let event = await Event.findOne({ name: req.body.name });
     if (event)
       return res.status(400).send(`Name ${req.body.name} already claimed!`);
 
@@ -22,6 +18,10 @@ router.post("/register-event", async (req, res) => {
     event = new Event({
       name: req.body.name,
       password: await bcrypt.hash(req.body.password, salt),
+      time:req.body.time,
+      place:req.body.place,
+      date:req.body.date,
+      desc: req.body.desc,
       isAdmin: req.body.isAdmin,
     });
 
@@ -34,6 +34,10 @@ router.post("/register-event", async (req, res) => {
         _id: event._id,
         name: event.name,
         email: event.email,
+        time: event.time,
+        place:event.place,
+        date: event.date,
+        desc: event.desc,
         isAdmin: event.isAdmin,
       });
   } catch (ex) {

@@ -6,7 +6,7 @@ const config = require("config");
 const groupSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true, minLength: 5, maxLength: 255 },
-    password: { type: String, required: true, minLength: 8, maxLength: 1024 },
+    password: { type: String, required: true, default:""},
     isAdmin: { type: Boolean, required: true },
     profilePicture: {
       type: String,

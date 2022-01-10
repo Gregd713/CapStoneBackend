@@ -1,11 +1,8 @@
 const { Group, validateLogin, validateGroup } = require("../models/groups");
 
-const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
-const res = require("express/lib/response");
 const router = express.Router();
 
 //* POST register a new group

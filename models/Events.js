@@ -6,7 +6,7 @@ const config = require("config");
 const eventSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true, minLength: 5, maxLength: 255 },
-    password: { type: String, required: true, minLength: 8, maxLength: 1024 },
+    password: { type: String, required: true, default:"" },
     isAdmin: { type: Boolean, required: true },
     profilePicture: {
       type: String,
@@ -15,7 +15,7 @@ const eventSchema = mongoose.Schema(
     
     time: {
       type: String,
-      default: "",
+      default: '',
     },
     place: {
         type: String,
@@ -38,6 +38,10 @@ eventSchema.methods.generateAuthToken = function () {
     {
       _id: this._id,
       name: this.name,
+      time: this.time,
+      place: this.place,
+      date: this.date,
+      desc: this.desc,
       isAdmin: this.isAdmin,
     },
     config.get("JWT_SECRET")
@@ -48,6 +52,10 @@ const validateEvent = (event) => {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     password: Joi.string().min(5).max(1024).required(),
+    time:Joi.string().min(2).max(50).required(),
+    place:Joi.string().min(2).max(50).required(),
+    date:Joi.string().min(2).max(50).required(),
+    desc:Joi.string().min(2).max(50).required(),
     isAdmin: Joi.bool().required(),
   });
   return schema.validate(event);
